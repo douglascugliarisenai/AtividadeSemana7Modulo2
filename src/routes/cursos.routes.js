@@ -86,4 +86,22 @@ cursosRoutes.put('/:id', async(request, response) => {
     }
 })
 
+cursosRoutes.delete('/:id', async(request, response) => {
+    const id = request.params.id
+
+    const cursoConsulta = await CursoController.buscarCurso(id)
+
+    if(!cursoConsulta){
+        return response.status(400).json({erro: 'Curso inexistente'})
+    }   
+
+    const curso = await CursoController.deletarCurso(id)
+
+    if(!curso){
+        return response.status(400).json({erro: 'Erro ao deletar o curso'})
+    } else {
+        return response.status(200).json({"Curso Deletado com sucesso": curso})
+    }
+})
+
 module.exports = cursosRoutes

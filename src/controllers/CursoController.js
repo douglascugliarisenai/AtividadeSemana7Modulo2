@@ -35,6 +35,11 @@ class CursoController {
         const curso = await Curso.update(dados, {where: {id: id}})
         return curso
     }
+
+    async deletarCurso(id) {
+        const curso = await Curso.destroy({where: {id: id}})
+        return curso
+    }
 }
 
 module.exports = new CursoController()
