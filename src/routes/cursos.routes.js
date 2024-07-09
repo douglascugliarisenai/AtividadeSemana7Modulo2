@@ -22,4 +22,14 @@ cursosRoutes.post('/', async(request, response) => {
     }
 })
 
+cursosRoutes.get('/', async(request, response) => {
+    const cursos = await CursoController.listarCursos()
+
+    if(!cursos){
+        return response.status(400).json('Não existem cursos cadastrados')
+    }
+
+    return response.status(200).json(cursos)
+})
+
 module.exports = cursosRoutes
