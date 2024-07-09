@@ -65,4 +65,25 @@ cursosRoutes.get('/duracao/:duracao', async(request, response) => {
     return response.status(200).json(curso)
 })
 
+cursosRoutes.put('/:id', async(request, response) => {
+    const id = request.params.id
+    const dados = request.body
+
+    if(!dados.nome){
+        return response.status(400).json({erro: 'Nome obrigatorio'})
+    }
+
+    if(!dados.duracao){
+        return response.status(400).json({erro: 'Duracao obrigatorio'})
+    }
+
+    const curso = await CursoController.atualizarCurso(id, dados)
+
+    if(!curso){
+        return response.status(400).json({erro: 'Erro ao atualizar o curso'})
+    } else {
+        return response.status(200).json({"Curso Atualizado com sucesso": curso})
+    }
+})
+
 module.exports = cursosRoutes
