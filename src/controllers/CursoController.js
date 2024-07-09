@@ -30,6 +30,11 @@ class CursoController {
         const curso = await Curso.findAll({where: {duracao: duracao}})
         return curso
     }
+
+    async atualizarCurso(id, dados) {
+        const curso = await Curso.update(dados, {where: {id: id}})
+        return curso
+    }
 }
 
 module.exports = new CursoController()
