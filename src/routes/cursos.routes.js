@@ -32,4 +32,37 @@ cursosRoutes.get('/', async(request, response) => {
     return response.status(200).json(cursos)
 })
 
+cursosRoutes.get('/:id', async(request, response) => {
+    const id = request.params.id
+    const curso = await CursoController.buscarCurso(id)
+
+    if(!curso){
+        return response.status(400).json({erro: 'Curso inexistente'})
+    }
+
+    return response.status(200).json(curso)
+})
+
+cursosRoutes.get('/nome/:nome', async(request, response) => {
+    const nome = request.params.nome
+    const curso = await CursoController.buscarCursoNome(nome)   
+
+    if(!curso){
+        return response.status(400).json({erro: 'Curso inexistente'})
+    }   
+
+    return response.status(200).json(curso)
+})
+
+cursosRoutes.get('/duracao/:duracao', async(request, response) => {
+    const duracao = request.params.duracao
+    const curso = await CursoController.buscarCursoDuracao(duracao) 
+
+    if(!curso){
+        return response.status(400).json({erro: 'Curso inexistente'})
+    }   
+
+    return response.status(200).json(curso)
+})
+
 module.exports = cursosRoutes
