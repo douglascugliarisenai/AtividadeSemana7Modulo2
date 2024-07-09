@@ -9,6 +9,11 @@ class CursoController {
 
         return curso
     }
+
+    async listarCursos() {
+        const cursos = await Curso.findAll()
+        return cursos
+    }
 }
 
 module.exports = new CursoController()
