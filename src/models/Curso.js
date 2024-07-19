@@ -14,4 +14,5 @@ const Curso = connection.define('cursos', {
     paranoid: true //  Habilita soft delete
 });
 
+
 module.exports = Curso;

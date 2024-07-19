@@ -3,105 +3,12 @@ const CursoController = require('../controllers/CursoController')
 
 const cursosRoutes = new Router()
 
-cursosRoutes.post('/', async(request, response) => {
-    const dados = request.body
-    
-    if(!dados.nome){
-        return response.status(400).json({erro: 'Nome obrigatorio'})
-    }
-
-    if(!dados.duracao){
-        return response.status(400).json({erro: 'Duracao obrigatorio'})
-    }
-
-    const curso = await CursoController.cadastrarCurso(dados)
-    if(!curso){
-        return response.status(400).json({erro: 'Erro ao cadastrar o curso'})
-    } else {
-        return response.status(201).json({"Curso Cadastrado com sucesso": curso})
-    }
-})
-
-cursosRoutes.get('/', async(request, response) => {
-    const cursos = await CursoController.listarCursos()
-
-    if(!cursos){
-        return response.status(400).json('Não existem cursos cadastrados')
-    }
-
-    return response.status(200).json(cursos)
-})
-
-cursosRoutes.get('/:id', async(request, response) => {
-    const id = request.params.id
-    const curso = await CursoController.buscarCurso(id)
-
-    if(!curso){
-        return response.status(400).json({erro: 'Curso inexistente'})
-    }
-
-    return response.status(200).json(curso)
-})
-
-cursosRoutes.get('/nome/:nome', async(request, response) => {
-    const nome = request.params.nome
-    const curso = await CursoController.buscarCursoNome(nome)   
-
-    if(!curso){
-        return response.status(400).json({erro: 'Curso inexistente'})
-    }   
-
-    return response.status(200).json(curso)
-})
-
-cursosRoutes.get('/duracao/:duracao', async(request, response) => {
-    const duracao = request.params.duracao
-    const curso = await CursoController.buscarCursoDuracao(duracao) 
-
-    if(!curso){
-        return response.status(400).json({erro: 'Curso inexistente'})
-    }   
-
-    return response.status(200).json(curso)
-})
-
-cursosRoutes.put('/:id', async(request, response) => {
-    const id = request.params.id
-    const dados = request.body
-
-    if(!dados.nome){
-        return response.status(400).json({erro: 'Nome obrigatorio'})
-    }
-
-    if(!dados.duracao){
-        return response.status(400).json({erro: 'Duracao obrigatorio'})
-    }
-
-    const curso = await CursoController.atualizarCurso(id, dados)
-
-    if(!curso){
-        return response.status(400).json({erro: 'Erro ao atualizar o curso'})
-    } else {
-        return response.status(200).json({"Curso Atualizado com sucesso": curso})
-    }
-})
-
-cursosRoutes.delete('/:id', async(request, response) => {
-    const id = request.params.id
-
-    const cursoConsulta = await CursoController.buscarCurso(id)
-
-    if(!cursoConsulta){
-        return response.status(400).json({erro: 'Curso inexistente'})
-    }   
-
-    const curso = await CursoController.deletarCurso(id)
-
-    if(!curso){
-        return response.status(400).json({erro: 'Erro ao deletar o curso'})
-    } else {
-        return response.status(200).json({"Curso Deletado com sucesso": curso})
-    }
-})
+cursosRoutes.post('/', CursoController.cadastrarCurso)
+cursosRoutes.get('/', CursoController.listarCursos)
+cursosRoutes.get('/:id', CursoController.buscarCurso)
+cursosRoutes.get('/nome/:nome', CursoController.buscarCursoNome)
+cursosRoutes.get('/duracao/:duracao', CursoController.buscarCursoDuracao)
+cursosRoutes.put('/:id', CursoController.atualizarCurso)
+cursosRoutes.delete('/:id', CursoController.deletarCurso)
 
 module.exports = cursosRoutes
