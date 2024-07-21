@@ -31,12 +31,30 @@ class CursoController {
 
     async listarCursos(request, response) {
         try {
-            const cursos = await Curso.findAll()
+            const nome = request.query.nome
+            const duracao = request.query.duracao
+            let cursos = ''
 
-            if(!cursos){
-                return response.status(400).json('Não existem cursos cadastrados')
+            if(nome){
+                cursos = await Curso.findAll({where: {nome: {[Op.iLike]: `%${nome}%`}}})
             }
 
+            if(duracao){
+                cursos = await Curso.findAll({where: {duracao: duracao}})
+            }
+
+            if(nome && duracao){
+               cursos = await Curso.findAll({where: {nome: {[Op.iLike]: `%${nome}%`}, duracao: parseInt(duracao)}})
+
+                if(!cursos){
+                    return response.status(400).json({erro: 'Curso inexistente'})
+                }   
+            }
+
+            if(!nome && !duracao){
+                cursos = await Curso.findAll()
+            }
+    
             return response.status(200).json(cursos)
         } catch (error) {
             response.status(500).json({erro: "Erro ao buscar os cursos: " + error})
@@ -51,36 +69,6 @@ class CursoController {
             if(!curso){
                 return response.status(400).json({erro: 'Curso inexistente'})
             }
-            return response.status(200).json(curso)
-        } catch (error) {
-            response.status(500).json({erro: "Erro ao buscar o curso: " + error})
-        }
-    }
-
-    async buscarCursoNome (request, response) {
-        try {
-            const nome = request.params.nome
-            const curso = await Curso.findAll({where: {nome: {[Op.iLike]: `%${nome}%`}}})
-
-            if(!curso){
-                return response.status(400).json({erro: 'Curso inexistente'})
-            }   
-
-            return response.status(200).json(curso)
-        } catch (error) {
-            response.status(500).json({erro: "Erro ao buscar o curso: " + error})
-        }
-    }
-
-    async buscarCursoDuracao (request, response) {
-        try {
-            const duracao = request.params.duracao
-            const curso = await Curso.findAll({where: {duracao: duracao}})
-
-            if(!curso){
-                return response.status(400).json({erro: 'Curso inexistente'})
-            }
-
             return response.status(200).json(curso)
         } catch (error) {
             response.status(500).json({erro: "Erro ao buscar o curso: " + error})
