@@ -80,7 +80,13 @@ class CursoController {
             const id = request.params.id
             const dados = request.body
         
-            const curso = await Curso.update(dados, {where: {id: id}})
+            const curso = await Curso.findByPk(id)
+
+            if(!curso){
+                return response.status(400).json({erro: 'Curso inexistente'})
+            }
+
+            curso = await Curso.update(dados, {where: {id: id}})
             
             if(!curso){
                 return response.status(400).json({erro: 'Erro ao atualizar o curso'})
