@@ -9,14 +9,6 @@ const Professor = connection.define('professores', {
     email: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    cursosId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'cursos',
-            key: 'id'
-        }
     }
 }, {
     paranoid: true //  Habilita soft delete
